@@ -8,6 +8,7 @@ import android.view.View;
 
 import com.sarvarcorp.artifactguidedemo.base.BaseAppCompatActivity;
 import com.sarvarcorp.artifactguidedemo.fragments.GuideTypesFragment;
+import com.sarvarcorp.artifactguidedemo.fragments.UniversalItemsFragment;
 import com.sarvarcorp.artifactguidedemo.workers.FragmentWorker;
 
 public class MainActivity extends BaseAppCompatActivity {
@@ -31,7 +32,7 @@ public class MainActivity extends BaseAppCompatActivity {
 
     protected void showInitFragment() {
         toolbar.setVisibility(View.GONE);
-        App.getComponent().provideFragmentWorker().showFragment(GuideTypesFragment.class, false, FragmentWorker.AnimationType.openFragment);
+        App.getComponent().provideFragmentWorker().showFragment(UniversalItemsFragment.class, false, FragmentWorker.AnimationType.openFragment);
     }
 
     @Override

@@ -75,9 +75,9 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
         if (currentFragment==null) {
             fragmentTranaction.add(R.id.mainContainer, fragment);
         } else {
-            if (currentFragment == clazz) {
+            /*if (currentFragment == clazz) {
                 return;
-            }
+            }*/
             fragmentTranaction.replace(R.id.mainContainer, fragment);
             if (addToBackStack) {
                 fragmentTranaction.addToBackStack(clazz.getName());

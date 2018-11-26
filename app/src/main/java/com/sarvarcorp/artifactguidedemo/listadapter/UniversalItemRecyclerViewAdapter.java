@@ -3,11 +3,13 @@ package com.sarvarcorp.artifactguidedemo.listadapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.sarvarcorp.artifactguidedemo.App;
 import com.sarvarcorp.artifactguidedemo.R;
 import com.sarvarcorp.artifactguidedemo.base.BaseAppCompatActivity;
-import com.sarvarcorp.artifactguidedemo.entities.GuideType;
 import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 
 import java.util.List;
@@ -33,11 +35,23 @@ public class UniversalItemRecyclerViewAdapter
         this.activity = activity;
     }
 
+    @Override
+    public int getItemViewType(int position) {
+        String viewType = mValues.getValue().get(position).viewType;
+        int layout = R.layout.list_item_universal_with_image;
+        if (viewType.equals("button")) {
+            layout = R.layout.list_item_universal_button;
+        }
+        return layout;
+    }
+
     @NonNull
     @Override
     public UniversalItemListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
+
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.fragment_guide_type_list_item, parent, false);
+                .inflate(viewType, parent, false);
         return new UniversalItemListViewHolder(view, listener);
     }
 
@@ -80,16 +94,16 @@ public class UniversalItemRecyclerViewAdapter
     public class UniversalItemListViewHolder extends RecyclerView.ViewHolder {
         private final View view;
         private final ConstraintLayout buttonView;
-        private final TextView nameView;
+        private final TextView titleView;
+        private ImageView imageView;
         private UniversalItem universalItem;
-        private int position;
 
         public UniversalItemListViewHolder(View itemView, final UniversalItemListListener listener) {
             super(itemView);
-            position=-1;
             view = itemView;
-            buttonView = (ConstraintLayout) itemView.findViewById(R.id.guideTypeButton);
-            nameView = (TextView) itemView.findViewById(R.id.guideTypeNameTextView);
+            buttonView = (ConstraintLayout) itemView.findViewById(R.id.universalItemButton);
+            titleView = (TextView) itemView.findViewById(R.id.universalItemTitleTextView);
+            imageView = null;
 
             buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -105,13 +119,25 @@ public class UniversalItemRecyclerViewAdapter
         }
 
         public void update() {
-            nameView.setText(universalItem.name);
-            ViewCompat.setTransitionName(nameView,"quideTypeName"+ universalItem.id);
-            ViewCompat.setTransitionName(buttonView,"quideTypeLayout"+ universalItem.id);
+            titleView.setText(universalItem.name);
+            ViewCompat.setTransitionName(titleView,"universalItemTitle"+ universalItem.id);
+            ViewCompat.setTransitionName(buttonView,"universalItemLayout"+ universalItem.id);
+
+            if (universalItem.viewType.equals("default")) {
+                if (imageView == null) {
+                    imageView = (ImageView) itemView.findViewById(R.id.universalItemImageView);
+                }
+                if (!universalItem.image.equals("")) {
+                    Glide.with(App.getComponent().provideStaticData().getMainActivity())
+                            .load(universalItem.image)
+                            .into(imageView);
+                    //setImage(guide.image, imageView);
+                }
+                ViewCompat.setTransitionName(imageView,"universalItemImage"+ universalItem.id);
+            }
         }
 
         public void setUniversalItem(UniversalItem universalItem, int position) {
-            this.position = position;
             this.universalItem = universalItem;
             update();
         }

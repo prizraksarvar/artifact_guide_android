@@ -7,6 +7,7 @@ import com.sarvarcorp.artifactguidedemo.dagger.modules.ContextModule;
 import com.sarvarcorp.artifactguidedemo.dagger.modules.StorageModule;
 import com.sarvarcorp.artifactguidedemo.repositories.GuideRepository;
 import com.sarvarcorp.artifactguidedemo.repositories.GuideTypesRepository;
+import com.sarvarcorp.artifactguidedemo.repositories.UniversalItemRepository;
 import com.sarvarcorp.artifactguidedemo.workers.AppDatabase;
 import com.sarvarcorp.artifactguidedemo.workers.FragmentWorker;
 import com.sarvarcorp.artifactguidedemo.workers.ImageCacheWorker;
@@ -36,4 +37,5 @@ public interface AppComponent {
     Executor provideExecutor();
     GuideTypesRepository provideGuideTypesRepository();
     GuideRepository provideGuidesRepository();
+    UniversalItemRepository provideUniversalItemRepository();
 }

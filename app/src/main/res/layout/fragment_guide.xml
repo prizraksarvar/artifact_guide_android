@@ -26,8 +26,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/constraintLayout"
-            app:layout_constraintTop_toTopOf="@+id/constraintLayout">
+            app:layout_constraintBottom_toTopOf="@+id/universalItemButton"
+            app:layout_constraintTop_toTopOf="@+id/universalItemButton">
 
             <ImageView
                 android:id="@+id/guideShowImageView"

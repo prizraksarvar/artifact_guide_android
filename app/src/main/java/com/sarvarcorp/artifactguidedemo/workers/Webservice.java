@@ -22,22 +22,6 @@ public interface Webservice {
     })
     Call<ResponseAdapter<List<GuideType>>> getGuideTypes(@Header("token") String token);
 
-    @GET("/universal_items/{parentId}.json")
-    @Headers({
-            "Authorization: {token}",
-            "X-Requested-With: XMLHttpRequest",
-            "Content-Type: application/json"
-    })
-    Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(@Header("token") String token, @Path("parentId") int parentId);
-
-    @GET("/universal_items/show/{id}.json")
-    @Headers({
-            "Authorization: {token}",
-            "X-Requested-With: XMLHttpRequest",
-            "Content-Type: application/json"
-    })
-    Call<ResponseAdapter<UniversalItem>> getUniversalItem(@Header("token") String token, @Path("id") int id);
-
     @GET("/guide/{typeId}.json")
     @Headers({
             "Authorization: {token}",
@@ -53,4 +37,28 @@ public interface Webservice {
             "Content-Type: application/json"
     })
     Call<ResponseAdapter<Guide>> getGuide(@Header("token") String token, @Path("id") int id);
+
+
+    
+    /*
+     * Список универсальных элементов
+     * @param token
+     * @param parentId
+     * @return
+     */
+    @GET("/api/universal_items/parent/{parentId}")
+    @Headers({
+            "Authorization: {token}",
+            "X-Requested-With: XMLHttpRequest",
+            "Content-Type: application/json"
+    })
+    Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(@Header("token") String token, @Path("parentId") int parentId);
+
+    @GET("/api/universal_items/{id}")
+    @Headers({
+            "Authorization: {token}",
+            "X-Requested-With: XMLHttpRequest",
+            "Content-Type: application/json"
+    })
+    Call<ResponseAdapter<UniversalItem>> getUniversalItem(@Header("token") String token, @Path("id") int id);
 }

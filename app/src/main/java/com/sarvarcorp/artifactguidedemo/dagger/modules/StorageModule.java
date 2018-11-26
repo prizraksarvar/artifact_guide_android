@@ -5,6 +5,7 @@ import android.content.Context;
 import com.sarvarcorp.artifactguidedemo.dagger.StaticData;
 import com.sarvarcorp.artifactguidedemo.repositories.GuideRepository;
 import com.sarvarcorp.artifactguidedemo.repositories.GuideTypesRepository;
+import com.sarvarcorp.artifactguidedemo.repositories.UniversalItemRepository;
 import com.sarvarcorp.artifactguidedemo.workers.AppDatabase;
 import com.sarvarcorp.artifactguidedemo.workers.ImageCacheWorker;
 import com.sarvarcorp.artifactguidedemo.workers.Webservice;
@@ -47,5 +48,10 @@ public class StorageModule {
     @Provides
     public GuideRepository provideGuidesRepository(Webservice webservice, AppDatabase appDatabase, Executor executor) {
         return new GuideRepository(webservice, appDatabase.guideDao(), executor);
+    }
+
+    @Provides
+    public UniversalItemRepository provideUniversalItemRepository(Webservice webservice, AppDatabase appDatabase, Executor executor) {
+        return new UniversalItemRepository(webservice, appDatabase.universalItemDao(), executor);
     }
 }

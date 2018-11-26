@@ -59,7 +59,7 @@ public class GuideTypesFragment extends BaseFragment implements GuideTypesRecycl
         mGuideTypesListView = view.findViewById(R.id.guideTypesRecyclerView);
         mRecyclerViewAdepter = new GuideTypesRecyclerViewAdapter(this,(BaseAppCompatActivity) this.getActivity());
         mGuideTypesListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
-        //mGuideTypesListView.setLayoutManager(new GridLayoutManager(this.getContext(),2));
+        //mItemsListView.setLayoutManager(new GridLayoutManager(this.getContext(),2));
         mGuideTypesListView.setAdapter(mRecyclerViewAdepter);
         mRecyclerViewAdepter.setValues(viewModel.getList());
     }

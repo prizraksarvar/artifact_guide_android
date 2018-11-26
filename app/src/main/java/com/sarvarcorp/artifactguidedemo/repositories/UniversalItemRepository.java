@@ -30,6 +30,11 @@ public class UniversalItemRepository {
         this.executor = executor;
     }
 
+    public LiveData<UniversalItem> get(int id) {
+        refreshUniversalItem(id);
+        return universalItemDao.get(id);
+    }
+
     public LiveData<List<UniversalItem>> getList(int parentId) {
         refreshUniversalItems(parentId);
         return universalItemDao.getList(parentId);
@@ -40,12 +45,27 @@ public class UniversalItemRepository {
             Response<ResponseAdapter<List<UniversalItem>>> response = null;
             try {
                 //TODO: Запрашивать нужно только если данные не обновляли давно
-                response = webservice.getGuideTypes(App.getComponent().provideStaticData().getUserToken()).execute();
+                response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
 
                 if (response.isSuccessful() && response.body()!=null)
-                    for (UniversalItem guideType: response.body().data) {
-                        universalItemDao.save(guideType);
+                    for (UniversalItem universalItem: response.body().data) {
+                        universalItemDao.save(universalItem);
                     }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void refreshUniversalItem(final int id) {
+        executor.execute(() -> {
+            Response<ResponseAdapter<UniversalItem>> response = null;
+            try {
+                //TODO: Запрашивать нужно только если данные не обновляли давно
+                response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
+
+                if (response.isSuccessful() && response.body()!=null)
+                    universalItemDao.save(response.body().data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
