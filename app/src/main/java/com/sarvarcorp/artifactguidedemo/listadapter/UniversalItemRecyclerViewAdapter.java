@@ -108,7 +108,7 @@ public class UniversalItemRecyclerViewAdapter
             buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    listener.onClickListItem(view, universalItem);
+                    listener.onClickListItem(itemView, universalItem);
                 }
             });
         }

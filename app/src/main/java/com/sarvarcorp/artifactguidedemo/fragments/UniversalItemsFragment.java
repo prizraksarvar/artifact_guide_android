@@ -79,8 +79,10 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
         }
         title.setText(titleString);
 
-        ViewCompat.setTransitionName(title,getTitleSharedName());
-        ViewCompat.setTransitionName(layout, getLayoutSharedName());
+        if (parentItem!=null) {
+            ViewCompat.setTransitionName(title, getTitleSharedName());
+            ViewCompat.setTransitionName(layout, getLayoutSharedName());
+        }
         return view;
     }
 
@@ -114,12 +116,14 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
 
     @Override
     public void prepareEnterAnimation(FragmentTransaction fragmentTranaction, BaseFragment oldFragment, View view) {
+        if (parentItem==null)
+            return;
         ConstraintLayout layout = view.findViewById(R.id.universalItemButton);
         TextView title = view.findViewById(R.id.universalItemTitleTextView);
         ImageView imageView = view.findViewById(R.id.universalItemImageView);
         fragmentTranaction.addSharedElement(title,getTitleSharedName());
         fragmentTranaction.addSharedElement(layout,getLayoutSharedName());
-        if (imageView!=null) {
+        if (imageView!=null && !parentItem.isDetail) {
             fragmentTranaction.addSharedElement(imageView,getImageSharedName());
         }
         setSharedElementEnterTransition(new ButtonToFragmentTransition());

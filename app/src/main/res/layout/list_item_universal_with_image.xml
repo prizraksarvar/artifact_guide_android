@@ -21,10 +21,10 @@
 
         <ImageView
             android:id="@+id/universalItemImageView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="200dp"
+            android:layout_height="100dp"
             android:scaleType="centerCrop"
-            app:layout_constraintBottom_toTopOf="@+id/universalItemTitleTextView"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
