@@ -6,11 +6,12 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 @Entity
-public class GuideType {
+public class UniversalItem {
     @PrimaryKey
     @NonNull
     public int id;
-    public String parentId;
+    public int parentId;
+    public String listView;
     public String name;
     public String image;
 }

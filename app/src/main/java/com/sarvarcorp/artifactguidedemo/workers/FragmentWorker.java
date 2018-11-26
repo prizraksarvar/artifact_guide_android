@@ -114,6 +114,12 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
         if (fragmentManager.getFragments().size()>0) {
             Fragment fragment = getCurrentFragment();
             currentFragment = fragment.getClass();
+        } else {
+            currentFragment = null;
         }
+    }
+
+    public void onActivityDestroy() {
+        currentFragment = null;
     }
 }

@@ -2,6 +2,7 @@ package com.sarvarcorp.artifactguidedemo.workers;
 
 import com.sarvarcorp.artifactguidedemo.entities.Guide;
 import com.sarvarcorp.artifactguidedemo.entities.GuideType;
+import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 import com.sarvarcorp.artifactguidedemo.repositories.ResponseAdapter;
 
 import java.util.List;
@@ -20,6 +21,22 @@ public interface Webservice {
             "Content-Type: application/json"
     })
     Call<ResponseAdapter<List<GuideType>>> getGuideTypes(@Header("token") String token);
+
+    @GET("/universal_items/{parentId}.json")
+    @Headers({
+            "Authorization: {token}",
+            "X-Requested-With: XMLHttpRequest",
+            "Content-Type: application/json"
+    })
+    Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(@Header("token") String token, @Path("parentId") int parentId);
+
+    @GET("/universal_items/show/{id}.json")
+    @Headers({
+            "Authorization: {token}",
+            "X-Requested-With: XMLHttpRequest",
+            "Content-Type: application/json"
+    })
+    Call<ResponseAdapter<UniversalItem>> getUniversalItem(@Header("token") String token, @Path("id") int id);
 
     @GET("/guide/{typeId}.json")
     @Headers({
