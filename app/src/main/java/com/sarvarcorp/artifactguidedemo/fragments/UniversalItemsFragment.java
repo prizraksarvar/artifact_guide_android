@@ -102,11 +102,11 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
                 if (!universalItem.isDetail) {
                     UniversalItemsFragment fragment = (UniversalItemsFragment) App.getComponent().provideFragmentWorker().getFragment(UniversalItemsFragment.class);
                     fragment.setParentItem(universalItem);
-                    App.getComponent().provideFragmentWorker().showFragment(GuidesFragment.class,true, fragment, FragmentWorker.AnimationType.openGuidesList, view);
+                    App.getComponent().provideFragmentWorker().showFragment(UniversalItemsFragment.class,true, fragment, FragmentWorker.AnimationType.openGuidesList, view);
                 } else {
-                    UniversalItemsFragment fragment = (UniversalItemsFragment) App.getComponent().provideFragmentWorker().getFragment(UniversalItemsFragment.class);
-                    fragment.setParentItem(universalItem);
-                    App.getComponent().provideFragmentWorker().showFragment(GuidesFragment.class,true, fragment, FragmentWorker.AnimationType.openGuidesList, view);
+                    UniversalItemFragment fragment = (UniversalItemFragment) App.getComponent().provideFragmentWorker().getFragment(UniversalItemFragment.class);
+                    fragment.setUniversalItem(universalItem);
+                    App.getComponent().provideFragmentWorker().showFragment(UniversalItemFragment.class,true, fragment, FragmentWorker.AnimationType.openGuidesList, view);
                 }
             } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | java.lang.InstantiationException e) {
                 e.printStackTrace();

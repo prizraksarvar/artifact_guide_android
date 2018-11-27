@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -16,10 +17,10 @@ import com.sarvarcorp.artifactguidedemo.base.BaseFragment;
 import com.sarvarcorp.artifactguidedemo.design.animation.ButtonToFragmentTransition;
 import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 import com.sarvarcorp.artifactguidedemo.models.UniversalItemViewModel;
-import com.sarvarcorp.artifactguidedemo.models.UniversalItemsViewModel;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.view.ViewCompat;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
@@ -30,11 +31,12 @@ import androidx.lifecycle.ViewModelProviders;
 public class UniversalItemFragment extends BaseFragment implements Observer<UniversalItem> {
     private UniversalItem universalItem;
     private UniversalItemViewModel viewModel;
-    private LiveData<UniversalItem> guideLive;
+    private LiveData<UniversalItem> universalItemLive;
 
     private TextView titelTextView;
     private ImageView imageView;
     private TextView descriptionTextView;
+    private LinearLayout layout;
 
     public UniversalItem getUniversalItem() {
         return universalItem;
@@ -54,26 +56,28 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
         super.onCreate(savedInstanceState);
         viewModel = ViewModelProviders.of(this).get(UniversalItemViewModel.class);
         viewModel.init(universalItem.id);
-        guideLive = viewModel.get();
+        universalItemLive = viewModel.get();
 
-        guideLive.observe(this,this);
+        universalItemLive.observe(this,this);
     }
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = super.onCreateView(inflater, container, savedInstanceState);
-        titelTextView = view.findViewById(R.id.universalItemTitleTextView);
-        imageView = view.findViewById(R.id.universalItemImageView);
-        descriptionTextView = view.findViewById(R.id.guideDescriptionTextView);
+        View rootView = super.onCreateView(inflater, container, savedInstanceState);
+        titelTextView = rootView.findViewById(R.id.universalItemTitleTextView);
+        layout = rootView.findViewById(R.id.universalItemFragmentLayout2);
+        imageView = rootView.findViewById(R.id.universalItemImageView);
+        descriptionTextView = rootView.findViewById(R.id.universalItemDescription);
 
         ViewCompat.setTransitionName(titelTextView,getTitleSharedName());
         ViewCompat.setTransitionName(imageView, getImageSharedName());
-        return view;
+        ViewCompat.setTransitionName(layout, getLayoutSharedName());
+        return rootView;
     }
 
     @Override
     protected int getLayoutID() {
-        return R.layout.fragment_guide;
+        return R.layout.fragment_universal_item;
     }
 
     @Override
@@ -94,8 +98,10 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
 
     @Override
     public void prepareEnterAnimation(FragmentTransaction fragmentTranaction, BaseFragment oldFragment, View view) {
-        ImageView image = view.findViewById(R.id.guideListImageView);
-        TextView title = view.findViewById(R.id.guideNameTextView);
+        ConstraintLayout layout = view.findViewById(R.id.universalItemButton);
+        ImageView image = view.findViewById(R.id.universalItemImageView);
+        TextView title = view.findViewById(R.id.universalItemTitleTextView);
+        fragmentTranaction.addSharedElement(layout,getLayoutSharedName());
         fragmentTranaction.addSharedElement(title,getTitleSharedName());
         if (image!=null)
             fragmentTranaction.addSharedElement(image, getImageSharedName());
@@ -111,5 +117,9 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
 
     private String getImageSharedName() {
         return "universalItemImage"+ universalItem.id;
+    }
+
+    private String getLayoutSharedName() {
+        return "universalItemLayout"+ universalItem.id;
     }
 }
