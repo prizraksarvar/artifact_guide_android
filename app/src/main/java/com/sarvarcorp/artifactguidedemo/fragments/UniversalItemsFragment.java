@@ -4,6 +4,7 @@ package com.sarvarcorp.artifactguidedemo.fragments;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
+import android.transition.Fade;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,7 +139,7 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
         }
         setSharedElementEnterTransition(new ButtonToFragmentTransition());
         setEnterTransition(new ChangeBounds());
-        setExitTransition(new ChangeBounds());
+        setExitTransition(new Fade());
         setSharedElementReturnTransition(new ButtonToFragmentTransition());
     }
 

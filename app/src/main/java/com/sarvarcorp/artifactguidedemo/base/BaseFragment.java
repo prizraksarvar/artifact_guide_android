@@ -26,7 +26,7 @@ public abstract class BaseFragment extends Fragment {
 
     }
 
-    public void prepareExitAnimation(FragmentTransaction fragmentTranaction, BaseFragment oldFragment, View view) {
+    public void prepareExitAnimation(FragmentTransaction fragmentTranaction, BaseFragment newFragment, View view) {
 
     }
 

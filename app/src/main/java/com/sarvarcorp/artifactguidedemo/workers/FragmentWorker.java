@@ -62,10 +62,15 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment!=null) {
             BaseFragment oldFragment = getCurrentFragment();
             fragment.prepareAnimation(fragmentTranaction, oldFragment, view);
-            fragment.prepareEnterAnimation(fragmentTranaction, oldFragment, view);
-            fragment.prepareExitAnimation(fragmentTranaction, oldFragment, view);
-            fragment.prepareReturnAnimation(fragmentTranaction, oldFragment, view);
-            fragment.prepareReenterAnimation(fragmentTranaction, oldFragment, view);
+
+            if (addToBackStack) {
+                fragment.prepareEnterAnimation(fragmentTranaction, oldFragment, view);
+                oldFragment.prepareExitAnimation(fragmentTranaction, fragment, view);
+            } else {
+                fragment.prepareReturnAnimation(fragmentTranaction, oldFragment, view);
+                oldFragment.prepareExitAnimation(fragmentTranaction, oldFragment, view);
+            }
+
             /*fragment.setSharedElementEnterTransition(new DetailsTransition());
             fragment.setEnterTransition(new Fade());
             fragment.setExitTransition(new Fade());
