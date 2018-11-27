@@ -1,6 +1,7 @@
 package com.sarvarcorp.artifactguidedemo.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
@@ -82,8 +83,17 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
         if (parentItem!=null) {
             ViewCompat.setTransitionName(title, getTitleSharedName());
             ViewCompat.setTransitionName(layout, getLayoutSharedName());
+            setBackgroundColor();
         }
         return view;
+    }
+
+    private void setBackgroundColor() {
+        if (!parentItem.backgroundColor.equals("")) {
+            int color = Color.parseColor(parentItem.backgroundColor);
+            color = Color.argb(50,Color.red(color),Color.green(color),Color.blue(color));
+            layout.setBackgroundColor(color);
+        }
     }
 
     public void initRecyclerView(View view) {

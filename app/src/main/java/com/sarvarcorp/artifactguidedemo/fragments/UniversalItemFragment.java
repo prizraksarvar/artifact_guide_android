@@ -1,6 +1,7 @@
 package com.sarvarcorp.artifactguidedemo.fragments;
 
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
@@ -69,6 +70,10 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
         imageView = rootView.findViewById(R.id.universalItemImageView);
         descriptionTextView = rootView.findViewById(R.id.universalItemDescription);
 
+        if (universalItem!=null) {
+            setBackgroundColor(universalItem);
+        }
+
         ViewCompat.setTransitionName(titelTextView,getTitleSharedName());
         ViewCompat.setTransitionName(imageView, getImageSharedName());
         ViewCompat.setTransitionName(layout, getLayoutSharedName());
@@ -93,6 +98,16 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
                 //setImage(universalItem.image, imageView);
             }
 
+            setBackgroundColor(universalItem);
+
+        }
+    }
+
+    private void setBackgroundColor(UniversalItem universalItem) {
+        if (!universalItem.backgroundColor.equals("")) {
+            int color = Color.parseColor(universalItem.backgroundColor);
+            color = Color.argb(50,Color.red(color),Color.green(color),Color.blue(color));
+            layout.setBackgroundColor(color);
         }
     }
 

@@ -100,6 +100,7 @@ public class UniversalItemRecyclerViewAdapter
         private final ConstraintLayout buttonView;
         private final TextView titleView;
         private ImageView imageView;
+        private ImageView smallImageView;
         private UniversalItem universalItem;
 
         public UniversalItemListViewHolder(View itemView, final UniversalItemListListener listener) {
@@ -108,8 +109,9 @@ public class UniversalItemRecyclerViewAdapter
             buttonView = (ConstraintLayout) itemView.findViewById(R.id.universalItemButton);
             titleView = (TextView) itemView.findViewById(R.id.universalItemTitleTextView);
             imageView = null;
+            smallImageView = null;
 
-            buttonView.setBackgroundColor(Color.parseColor("#303030"));
+            buttonView.setBackgroundColor(Color.parseColor("#5a595b"));
 
             buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,23 +131,39 @@ public class UniversalItemRecyclerViewAdapter
             ViewCompat.setTransitionName(titleView,"universalItemTitle"+ universalItem.id);
             ViewCompat.setTransitionName(buttonView,"universalItemLayout"+ universalItem.id);
 
-            if (universalItem.viewType.equals("default")) {
-                if (imageView == null) {
-                    imageView = (ImageView) itemView.findViewById(R.id.universalItemImageView);
-                }
-                setImage();
-                ViewCompat.setTransitionName(imageView,"universalItemImage"+ universalItem.id);
-                setBackgroundColor();
-            }
-
+            setImage();
+            setSmallImage();
+            setBackgroundColor();
         }
 
         private void setImage() {
+            if (imageView == null) {
+                imageView = (ImageView) itemView.findViewById(R.id.universalItemImageView);
+                if (imageView==null) {
+                    return;
+                }
+            }
             if (!universalItem.image.equals("")) {
                 Glide.with(App.getComponent().provideStaticData().getMainActivity())
                         .load(universalItem.image)
                         .into(imageView);
             }
+            ViewCompat.setTransitionName(imageView,"universalItemImage"+ universalItem.id);
+        }
+
+        private void setSmallImage() {
+            if (smallImageView == null) {
+                smallImageView = (ImageView) view.findViewById(R.id.universalItemSmallImageView);
+                if (smallImageView==null) {
+                    return;
+                }
+            }
+            if (!universalItem.smallImage.equals("")) {
+                Glide.with(App.getComponent().provideStaticData().getMainActivity())
+                        .load(universalItem.smallImage)
+                        .into(smallImageView);
+            }
+            ViewCompat.setTransitionName(smallImageView,"universalItemSmallImage"+ universalItem.id);
         }
 
         private void setBackgroundColor() {
