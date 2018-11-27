@@ -22,4 +22,7 @@ public interface UniversalItemDao {
 
     @Query("SELECT * FROM UniversalItem WHERE parentId = :parentId")
     LiveData<List<UniversalItem>> getList(int parentId);
+
+    @Query("DELETE FROM UniversalItem WHERE parentId = :parentId")
+    void delete(int parentId);
 }

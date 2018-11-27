@@ -14,6 +14,8 @@ public class UniversalItem {
     public String viewType;
     public String name;
     public String image;
+    public String smallImage;
     public String description;
     public boolean isDetail;
+    public String backgroundColor;
 }

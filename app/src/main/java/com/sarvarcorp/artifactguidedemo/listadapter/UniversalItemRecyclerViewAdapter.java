@@ -1,5 +1,6 @@
 package com.sarvarcorp.artifactguidedemo.listadapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,8 +40,11 @@ public class UniversalItemRecyclerViewAdapter
     public int getItemViewType(int position) {
         String viewType = mValues.getValue().get(position).viewType;
         int layout = R.layout.list_item_universal_with_image;
-        if (viewType.equals("button")) {
-            layout = R.layout.list_item_universal_button;
+        switch (viewType) {
+            case "button": layout = R.layout.list_item_universal_button; break;
+            case "small_button": layout = R.layout.list_item_universal_small_button; break;
+            case "small_button_with_image": layout = R.layout.list_item_universal_small_button_with_image; break;
+            default: layout = R.layout.list_item_universal_with_image; break;
         }
         return layout;
     }
@@ -105,6 +109,8 @@ public class UniversalItemRecyclerViewAdapter
             titleView = (TextView) itemView.findViewById(R.id.universalItemTitleTextView);
             imageView = null;
 
+            buttonView.setBackgroundColor(Color.parseColor("#303030"));
+
             buttonView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -127,13 +133,24 @@ public class UniversalItemRecyclerViewAdapter
                 if (imageView == null) {
                     imageView = (ImageView) itemView.findViewById(R.id.universalItemImageView);
                 }
-                if (!universalItem.image.equals("")) {
-                    Glide.with(App.getComponent().provideStaticData().getMainActivity())
-                            .load(universalItem.image)
-                            .into(imageView);
-                    //setImage(guide.image, imageView);
-                }
+                setImage();
                 ViewCompat.setTransitionName(imageView,"universalItemImage"+ universalItem.id);
+                setBackgroundColor();
+            }
+
+        }
+
+        private void setImage() {
+            if (!universalItem.image.equals("")) {
+                Glide.with(App.getComponent().provideStaticData().getMainActivity())
+                        .load(universalItem.image)
+                        .into(imageView);
+            }
+        }
+
+        private void setBackgroundColor() {
+            if (!universalItem.backgroundColor.equals("")) {
+                buttonView.setBackgroundColor(Color.parseColor(universalItem.backgroundColor));
             }
         }
 

@@ -48,6 +48,7 @@ public class UniversalItemRepository {
                 response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
 
                 if (response.isSuccessful() && response.body()!=null)
+                    universalItemDao.delete(parentId);
                     for (UniversalItem universalItem: response.body().data) {
                         universalItemDao.save(universalItem);
                     }
