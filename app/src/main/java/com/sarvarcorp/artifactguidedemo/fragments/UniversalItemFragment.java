@@ -7,6 +7,7 @@ import android.transition.ChangeBounds;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -19,10 +20,14 @@ import com.sarvarcorp.artifactguidedemo.design.animation.ButtonToFragmentTransit
 import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 import com.sarvarcorp.artifactguidedemo.models.UniversalItemViewModel;
 
+import java.lang.reflect.InvocationTargetException;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.ViewCompat;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.Observer;
@@ -72,6 +77,18 @@ public class UniversalItemFragment extends BaseFragment implements Observer<Univ
 
         if (universalItem!=null) {
             setBackgroundColor(universalItem);
+            try {
+                FragmentManager fragmentManager = App.getComponent().provideStaticData().getFragmentManager();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                UniversalItemDescriptionFragment fragment = (UniversalItemDescriptionFragment) App.getComponent().provideFragmentWorker().getFragment(UniversalItemDescriptionFragment.class);
+                fragment.setParentItem(universalItem);
+                FrameLayout descrLayout = rootView.findViewById(R.id.descrFragmentContainer);
+                ConstraintSet set = new ConstraintSet();
+                transaction.add(descrLayout.getId(),fragment);
+                transaction.commit();
+            } catch (NoSuchMethodException | IllegalAccessException | java.lang.InstantiationException | InvocationTargetException e) {
+                e.printStackTrace();
+            }
         }
 
         ViewCompat.setTransitionName(titelTextView,getTitleSharedName());

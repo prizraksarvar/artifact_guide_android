@@ -13,10 +13,11 @@
         android:layout_height="match_parent">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/universalItemDescriptionLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:paddingBottom="24dp"
             app:layout_constraintBottom_toTopOf="@+id/universalItemButton"
             app:layout_constraintTop_toTopOf="@+id/universalItemButton">
 
@@ -55,12 +56,24 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:layout_marginBottom="24dp"
                 android:text="Какой нить текст или еще чего много букв и птп вапвапв апвап вапв апв апвапвап ввап ввап пвапвап вавапвап"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/universalItemImageView" />
+
+            <FrameLayout
+                android:id="@+id/descrFragmentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/universalItemDescription">
+
+            </FrameLayout>
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>
 
