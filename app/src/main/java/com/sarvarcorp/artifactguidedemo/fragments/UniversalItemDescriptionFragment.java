@@ -86,19 +86,26 @@ public class UniversalItemDescriptionFragment extends BaseFragment implements Ob
     public void onChanged(List<UniversalItem> universalItems) {
         layout.removeAllViews();
         for (UniversalItem item: universalItems) {
+            //TODO: Дубли нужно избавиться
             if (item.isDetail) {
                 View view = getLayoutInflater().inflate(R.layout.description_item_title, layout);
                 TextView title = view.findViewById(R.id.descriptionTitleTextView);
+                //TODO: костыль от не знания как получить вставленный вью
+                title.setId(R.id.descriptionItemLayout);
                 title.setText(item.name);
             }
             if (!item.description.equals("")) {
                 View view = getLayoutInflater().inflate(R.layout.description_item_text, layout);
                 TextView title = view.findViewById(R.id.descriptionTextView);
+                //TODO: костыль от не знания как получить вставленный вью
+                title.setId(R.id.descriptionItemLayout);
                 title.setText(item.description);
             }
             if (!item.image.equals("")) {
                 View view = getLayoutInflater().inflate(R.layout.description_item_image, layout);
                 ImageView imageView = view.findViewById(R.id.descriptionImageView);
+                //TODO: костыль от не знания как получить вставленный вью
+                imageView.setId(R.id.descriptionItemLayout);
                 Glide.with(App.getComponent().provideStaticData().getMainActivity())
                         .load(item.image)
                         .into(imageView);
