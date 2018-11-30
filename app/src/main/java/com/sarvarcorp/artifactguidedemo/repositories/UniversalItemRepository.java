@@ -47,11 +47,16 @@ public class UniversalItemRepository {
                 //TODO: Запрашивать нужно только если данные не обновляли давно
                 response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
 
-                if (response.isSuccessful() && response.body()!=null)
-                    universalItemDao.delete(parentId);
-                    for (UniversalItem universalItem: response.body().data) {
+                if (response.isSuccessful() && response.body()!=null) {
+                    int[] ids = new int[response.body().data.size()];
+                    int i = 0;
+                    for (UniversalItem universalItem : response.body().data) {
                         universalItemDao.save(universalItem);
+                        ids[i] = universalItem.id;
+                        i++;
                     }
+                    universalItemDao.deleteNotIds(parentId, ids);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

@@ -25,4 +25,7 @@ public interface UniversalItemDao {
 
     @Query("DELETE FROM UniversalItem WHERE parentId = :parentId")
     void delete(int parentId);
+
+    @Query("DELETE FROM UniversalItem WHERE parentId = :parentId AND id not IN (:ids)")
+    void deleteNotIds(int parentId, int[] ids);
 }

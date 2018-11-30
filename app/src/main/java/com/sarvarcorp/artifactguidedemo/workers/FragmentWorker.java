@@ -4,11 +4,13 @@ package com.sarvarcorp.artifactguidedemo.workers;
 import android.os.Build;
 import android.view.View;
 
+import com.sarvarcorp.artifactguidedemo.App;
 import com.sarvarcorp.artifactguidedemo.R;
 import com.sarvarcorp.artifactguidedemo.base.Base;
 import com.sarvarcorp.artifactguidedemo.base.BaseFragment;
 
 import java.lang.reflect.InvocationTargetException;
+import java.util.Random;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -21,6 +23,8 @@ import androidx.fragment.app.FragmentTransaction;
 public class FragmentWorker extends Base implements FragmentManager.OnBackStackChangedListener {
     private FragmentManager fragmentManager;
     private Class<?> currentFragment;
+
+    private int toAdsShowCounter = 5;
 
     public enum AnimationType {
         openGuide,
@@ -50,15 +54,7 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
         showFragment(clazz,addToBackStack, fragment, animationType, fragment.getView());
     }
 
-    public void showFragment(Class<?> clazz, boolean addToBackStack, BaseFragment fragment, AnimationType animationType, View view) {
-        FragmentTransaction fragmentTranaction = fragmentManager.beginTransaction();
-
-        // fragmentTranaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        /*if (addToBackStack)
-            fragmentTranaction.setCustomAnimations(R.animator.anim_in, R.animator.anim_none);
-        else
-            fragmentTranaction.setCustomAnimations( R.animator.anim_none, R.animator.anim_out);*/
-
+    private void setFragmentShowAnimations(FragmentTransaction fragmentTranaction, boolean addToBackStack, BaseFragment fragment, View view) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP && currentFragment!=null) {
             BaseFragment oldFragment = getCurrentFragment();
             fragment.prepareAnimation(fragmentTranaction, oldFragment, view);
@@ -70,33 +66,45 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
                 fragment.prepareReturnAnimation(fragmentTranaction, oldFragment, view);
                 oldFragment.prepareExitAnimation(fragmentTranaction, oldFragment, view);
             }
-
-            /*fragment.setSharedElementEnterTransition(new DetailsTransition());
-            fragment.setEnterTransition(new Fade());
-            fragment.setExitTransition(new Fade());
-            fragment.setSharedElementReturnTransition(new DetailsTransition());*/
         }
+    }
+
+    private void prepareAds() {
+        if (toAdsShowCounter==0) {
+
+            Random rnd = new Random(System.currentTimeMillis());
+            int r = rnd.nextInt();
+            boolean showed = App.getComponent().provideStaticData().getMainActivity().showInterstitealAds();
+            if (r<0)
+                r = r*(-1);
+            if (showed) {
+                toAdsShowCounter = r / 5;
+                if (toAdsShowCounter < 3) {
+                    toAdsShowCounter += 3;
+                }
+            } else {
+                toAdsShowCounter = 1;
+            }
+        }
+        toAdsShowCounter--;
+    }
+
+    public void showFragment(Class<?> clazz, boolean addToBackStack, BaseFragment fragment, AnimationType animationType, View view) {
+        FragmentTransaction fragmentTranaction = fragmentManager.beginTransaction();
+
+        setFragmentShowAnimations(fragmentTranaction, addToBackStack, fragment, view);
 
         if (currentFragment==null) {
             fragmentTranaction.add(R.id.mainContainer, fragment);
         } else {
-            /*if (currentFragment == clazz) {
-                return;
-            }*/
             fragmentTranaction.replace(R.id.mainContainer, fragment);
             if (addToBackStack) {
                 fragmentTranaction.addToBackStack(clazz.getName());
-
-                /*if (backStack.contains(currentFragment)) {
-                    backStack.remove(currentFragment);
-                }
-                backStack.push(currentFragment);*/
             }
         }
         currentFragment = clazz;
         fragmentTranaction.commit();
-        /*Toolbar toolbar = (Toolbar) mainActivity.findViewById(R.id.toolbar);
-        toolbar.setTitle(getFragmentName(currentFragment));*/
+        prepareAds();
     }
 
     public BaseFragment getCurrentFragment() {
