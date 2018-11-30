@@ -99,7 +99,7 @@ public class UniversalItemsFragment extends BaseFragment implements UniversalIte
 
     public void initRecyclerView(View view) {
         mItemsListView = view.findViewById(R.id.universalItemsRecyclerView);
-        mRecyclerViewAdepter = new UniversalItemRecyclerViewAdapter(this,(BaseAppCompatActivity) this.getActivity());
+        mRecyclerViewAdepter = new UniversalItemRecyclerViewAdapter(this,this);
         mItemsListView.setLayoutManager(new LinearLayoutManager(this.getContext()));
         //mItemsListView.setLayoutManager(new GridLayoutManager(this.getContext(),2));
         mItemsListView.setAdapter(mRecyclerViewAdepter);

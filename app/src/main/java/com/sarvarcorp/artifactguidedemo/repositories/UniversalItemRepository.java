@@ -44,18 +44,21 @@ public class UniversalItemRepository {
         executor.execute(() -> {
             Response<ResponseAdapter<List<UniversalItem>>> response = null;
             try {
-                //TODO: Запрашивать нужно только если данные не обновляли давно
-                response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
+                long time = System.currentTimeMillis();
+                if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0) {
+                    response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
 
-                if (response.isSuccessful() && response.body()!=null) {
-                    int[] ids = new int[response.body().data.size()];
-                    int i = 0;
-                    for (UniversalItem universalItem : response.body().data) {
-                        universalItemDao.save(universalItem);
-                        ids[i] = universalItem.id;
-                        i++;
+                    if (response.isSuccessful() && response.body() != null) {
+                        int[] ids = new int[response.body().data.size()];
+                        int i = 0;
+                        for (UniversalItem universalItem : response.body().data) {
+                            universalItem.updatedDate = time;
+                            universalItemDao.save(universalItem);
+                            ids[i] = universalItem.id;
+                            i++;
+                        }
+                        universalItemDao.deleteNotIds(parentId, ids);
                     }
-                    universalItemDao.deleteNotIds(parentId, ids);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -67,11 +70,13 @@ public class UniversalItemRepository {
         executor.execute(() -> {
             Response<ResponseAdapter<UniversalItem>> response = null;
             try {
-                //TODO: Запрашивать нужно только если данные не обновляли давно
-                response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
+                long time = System.currentTimeMillis();
+                if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT)) {
+                    response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
 
-                if (response.isSuccessful() && response.body()!=null)
-                    universalItemDao.save(response.body().data);
+                    if (response.isSuccessful() && response.body() != null)
+                        universalItemDao.save(response.body().data);
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

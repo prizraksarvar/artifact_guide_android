@@ -28,4 +28,10 @@ public interface UniversalItemDao {
 
     @Query("DELETE FROM UniversalItem WHERE parentId = :parentId AND id not IN (:ids)")
     void deleteNotIds(int parentId, int[] ids);
+
+    @Query("SELECT (count(*)>0) as unfresh FROM UniversalItem WHERE parentId = :parentId AND updatedDate<:time")
+    int unfreshCount(int parentId, long time);
+
+    @Query("SELECT (count(*)>0) as unfresh FROM UniversalItem WHERE id = :id AND updatedDate<:time")
+    boolean isUnfresh(int id, long time);
 }

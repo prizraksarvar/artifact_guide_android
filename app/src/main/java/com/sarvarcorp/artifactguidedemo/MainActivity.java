@@ -17,6 +17,8 @@ import com.sarvarcorp.artifactguidedemo.fragments.GuideTypesFragment;
 import com.sarvarcorp.artifactguidedemo.fragments.UniversalItemsFragment;
 import com.sarvarcorp.artifactguidedemo.workers.FragmentWorker;
 
+import java.util.concurrent.Executor;
+
 public class MainActivity extends BaseAppCompatActivity {
     private String activityState = "";
     private Toolbar toolbar;
@@ -57,14 +59,19 @@ public class MainActivity extends BaseAppCompatActivity {
     protected void initInterstitealAds() {
         mInterstitialAd = new InterstitialAd(this);
         mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
-        mInterstitialAd.loadAd(new AdRequest.Builder().build());
+        loadInterstitealAds();
 
         mInterstitialAd.setAdListener(new AdListener() {
             @Override
             public void onAdClosed() {
-                mInterstitialAd.loadAd(new AdRequest.Builder().build());
+                loadInterstitealAds();
             }
         });
+    }
+
+    protected void loadInterstitealAds() {
+        Executor executor = App.getComponent().provideExecutor();
+        mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
     protected void showInitFragment() {

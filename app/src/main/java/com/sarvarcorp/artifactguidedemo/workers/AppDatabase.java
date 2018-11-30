@@ -30,7 +30,7 @@ import androidx.sqlite.db.SupportSQLiteDatabase;
                 ImageCache.class,
                 UniversalItem.class,
         },
-        version = 5
+        version = 6
 )
 public abstract class AppDatabase extends RoomDatabase {
     public abstract GuideDao guideDao();
@@ -69,6 +69,13 @@ public abstract class AppDatabase extends RoomDatabase {
         public void migrate(@NonNull SupportSQLiteDatabase database) {
             database.execSQL("ALTER TABLE `UniversalItem` ADD COLUMN `smallImage` TEXT");
             database.execSQL("ALTER TABLE `UniversalItem` ADD COLUMN `backgroundColor` TEXT");
+        }
+    };
+
+    public static final Migration MIGRATION_5_6 = new Migration(5, 6) {
+        @Override
+        public void migrate(@NonNull SupportSQLiteDatabase database) {
+            database.execSQL("ALTER TABLE `UniversalItem` ADD COLUMN `updatedDate` INTEGER NOT NULL default 0");
         }
     };
 }

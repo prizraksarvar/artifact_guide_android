@@ -11,6 +11,7 @@ public class UniversalItem {
     @NonNull
     public int id;
     public int parentId;
+    public long updatedDate;
     public String viewType;
     public String name;
     public String image;

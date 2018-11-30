@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.sarvarcorp.artifactguidedemo.App;
 import com.sarvarcorp.artifactguidedemo.R;
 import com.sarvarcorp.artifactguidedemo.base.BaseAppCompatActivity;
+import com.sarvarcorp.artifactguidedemo.base.BaseFragment;
 import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 
 import java.util.List;
@@ -29,11 +30,11 @@ public class UniversalItemRecyclerViewAdapter
     private LiveData<List<UniversalItem>> mValues;
 
     private UniversalItemListListener listener;
-    private BaseAppCompatActivity activity;
+    private BaseFragment fragment;
 
-    public UniversalItemRecyclerViewAdapter(UniversalItemListListener listener, BaseAppCompatActivity activity) {
+    public UniversalItemRecyclerViewAdapter(UniversalItemListListener listener, BaseFragment fragment) {
         this.listener = listener;
-        this.activity = activity;
+        this.fragment = fragment;
     }
 
     @Override
@@ -52,8 +53,6 @@ public class UniversalItemRecyclerViewAdapter
     @NonNull
     @Override
     public UniversalItemListViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(viewType, parent, false);
         return new UniversalItemListViewHolder(view, listener);
@@ -64,17 +63,6 @@ public class UniversalItemRecyclerViewAdapter
         if (mValues==null || mValues.getValue()==null)
             return;
         holder.setUniversalItem(mValues.getValue().get(position),position);
-
-        /*holder.view.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
-            }
-        });*/
     }
 
     public void setValues(LiveData<List<UniversalItem>> values) {
@@ -144,7 +132,7 @@ public class UniversalItemRecyclerViewAdapter
                 }
             }
             if (!universalItem.image.equals("")) {
-                Glide.with(App.getComponent().provideStaticData().getMainActivity())
+                Glide.with(fragment)
                         .load(universalItem.image)
                         .into(imageView);
             }

@@ -2,6 +2,7 @@ package com.sarvarcorp.artifactguidedemo.workers;
 
 
 import android.os.Build;
+import android.os.Handler;
 import android.view.View;
 
 import com.sarvarcorp.artifactguidedemo.App;
@@ -25,6 +26,7 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
     private Class<?> currentFragment;
 
     private int toAdsShowCounter = 5;
+    private Random random = new Random(System.currentTimeMillis());
 
     public enum AnimationType {
         openGuide,
@@ -72,19 +74,20 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
     private void prepareAds() {
         if (toAdsShowCounter==0) {
 
-            Random rnd = new Random(System.currentTimeMillis());
-            int r = rnd.nextInt();
-            boolean showed = App.getComponent().provideStaticData().getMainActivity().showInterstitealAds();
-            if (r<0)
-                r = r*(-1);
-            if (showed) {
-                toAdsShowCounter = r / 5;
-                if (toAdsShowCounter < 3) {
-                    toAdsShowCounter += 3;
+            int r = random.nextInt(3+1)+2;
+            Handler h = new Handler();
+            h.postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    boolean showed = App.getComponent().provideStaticData().getMainActivity().showInterstitealAds();
+                    if (showed) {
+                        toAdsShowCounter = r;
+                    } else {
+                        toAdsShowCounter = 0;
+                    }
                 }
-            } else {
-                toAdsShowCounter = 1;
-            }
+            },300);
+            return;
         }
         toAdsShowCounter--;
     }
@@ -127,6 +130,7 @@ public class FragmentWorker extends Base implements FragmentManager.OnBackStackC
         if (fragmentManager.getFragments().size()>0) {
             Fragment fragment = getCurrentFragment();
             currentFragment = fragment.getClass();
+            prepareAds();
         } else {
             currentFragment = null;
         }
