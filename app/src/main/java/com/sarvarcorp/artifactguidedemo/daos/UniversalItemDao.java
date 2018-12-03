@@ -34,4 +34,7 @@ public interface UniversalItemDao {
 
     @Query("SELECT (count(*)>0) as unfresh FROM UniversalItem WHERE id = :id AND updatedDate<:time")
     boolean isUnfresh(int id, long time);
+
+    @Query("SELECT max(updatedDate) as updatedDate FROM UniversalItem WHERE parentId = :parentId")
+    int lastUpdatedDate(int parentId);
 }
