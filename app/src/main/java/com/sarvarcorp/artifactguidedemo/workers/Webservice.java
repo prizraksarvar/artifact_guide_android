@@ -46,19 +46,27 @@ public interface Webservice {
      * @param parentId
      * @return
      */
-    @GET("/api/universal_items/parent/{parentId}")
+    @GET("/api/universal_items/parent/{parentId}?updates_only={updatesOnly}")
     @Headers({
             "Authorization: {token}",
             "X-Requested-With: XMLHttpRequest",
             "Content-Type: application/json"
     })
-    Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(@Header("token") String token, @Path("parentId") int parentId);
+    Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(
+            @Header("token") String token,
+            @Path("updatesOnly") boolean updatesOnly,
+            @Path("parentId") int parentId
+    );
 
-    @GET("/api/universal_items/{id}")
+    @GET("/api/universal_items/{id}?updates_only={updatesOnly}")
     @Headers({
             "Authorization: {token}",
             "X-Requested-With: XMLHttpRequest",
             "Content-Type: application/json"
     })
-    Call<ResponseAdapter<UniversalItem>> getUniversalItem(@Header("token") String token, @Path("id") int id);
+    Call<ResponseAdapter<UniversalItem>> getUniversalItem(
+            @Header("token") String token,
+            @Path("updatesOnly") boolean updatesOnly,
+            @Path("id") int id
+    );
 }
