@@ -47,18 +47,23 @@ public class UniversalItemRepository {
                 long time = System.currentTimeMillis();
                 if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0 || universalItemDao.count(parentId)==0) {
                     response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
+                boolean updatesOnly = true;
+                if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0) {
+                    updatesOnly = false;
+                }
+                response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), updatesOnly, parentId).execute();
 
-                    if (response.isSuccessful() && response.body() != null) {
-                        int[] ids = new int[response.body().data.size()];
-                        int i = 0;
-                        for (UniversalItem universalItem : response.body().data) {
-                            universalItem.updatedDate = time;
-                            universalItemDao.save(universalItem);
-                            ids[i] = universalItem.id;
-                            i++;
-                        }
-                        universalItemDao.deleteNotIds(parentId, ids);
+                if (response.isSuccessful() && response.body() != null) {
+                    int[] ids = new int[response.body().data.size()];
+                    int i = 0;
+                    for (UniversalItem universalItem : response.body().data) {
+                        universalItem.updatedDate = time;
+                        universalItemDao.save(universalItem);
+                        ids[i] = universalItem.id;
+                        i++;
                     }
+                    if (updatesOnly)
+                        universalItemDao.deleteNotIds(parentId, ids);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -73,10 +78,14 @@ public class UniversalItemRepository {
                 long time = System.currentTimeMillis();
                 if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT) || !universalItemDao.exist(id)) {
                     response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
-
-                    if (response.isSuccessful() && response.body() != null)
-                        universalItemDao.save(response.body().data);
+                boolean updatesOnly = true;
+                if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT)) {
+                    updatesOnly = false;
                 }
+                response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), updatesOnly, id).execute();
+
+                if (response.isSuccessful() && response.body() != null)
+                    universalItemDao.save(response.body().data);
             } catch (IOException e) {
                 e.printStackTrace();
             }
