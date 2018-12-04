@@ -45,7 +45,7 @@ public class UniversalItemRepository {
             Response<ResponseAdapter<List<UniversalItem>>> response = null;
             try {
                 long time = System.currentTimeMillis();
-                if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0) {
+                if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0 || universalItemDao.count(parentId)==0) {
                     response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
 
                     if (response.isSuccessful() && response.body() != null) {
@@ -71,7 +71,7 @@ public class UniversalItemRepository {
             Response<ResponseAdapter<UniversalItem>> response = null;
             try {
                 long time = System.currentTimeMillis();
-                if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT)) {
+                if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT) || !universalItemDao.exist(id)) {
                     response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
 
                     if (response.isSuccessful() && response.body() != null)
