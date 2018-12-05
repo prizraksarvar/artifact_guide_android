@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.sarvarcorp.artifactguidedemo">
+    package="com.sarvarcorp.artifact">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -10,9 +10,9 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
-        android:name="com.sarvarcorp.artifactguidedemo.App"
+        android:name="com.sarvarcorp.artifact.App"
         android:theme="@style/AppTheme">
-        <activity android:name="com.sarvarcorp.artifactguidedemo.MainActivity">
+        <activity android:name="com.sarvarcorp.artifact.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -21,7 +21,7 @@
         </activity>
         <meta-data
             android:name="com.google.android.gms.ads.APPLICATION_ID"
-            android:value="ca-app-pub-3940256099942544~3347511713"/>
+            android:value="ca-app-pub-7280670502444208~7708714884"/>
     </application>
 
 </manifest>
