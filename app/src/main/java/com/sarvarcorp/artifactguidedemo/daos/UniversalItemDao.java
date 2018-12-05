@@ -42,5 +42,8 @@ public interface UniversalItemDao {
     boolean exist(int id);
 
     @Query("SELECT max(updatedDate) as updatedDate FROM UniversalItem WHERE parentId = :parentId")
-    int lastUpdatedDate(int parentId);
+    int lastListUpdatedDate(int parentId);
+
+    @Query("SELECT max(updatedDate) as updatedDate FROM UniversalItem WHERE id = :id")
+    int lastItemUpdatedDate(int id);
 }

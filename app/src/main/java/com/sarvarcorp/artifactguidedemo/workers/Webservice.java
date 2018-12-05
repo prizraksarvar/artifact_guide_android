@@ -12,6 +12,7 @@ import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.Path;
 import retrofit2.Call;
+import retrofit2.http.Query;
 
 public interface Webservice {
     @GET("/guide_type.json")
@@ -46,7 +47,7 @@ public interface Webservice {
      * @param parentId
      * @return
      */
-    @GET("/api/universal_items/parent/{parentId}?updates_only={updatesOnly}")
+    @GET("/api/universal_items/parent/{parentId}")
     @Headers({
             "Authorization: {token}",
             "X-Requested-With: XMLHttpRequest",
@@ -54,11 +55,11 @@ public interface Webservice {
     })
     Call<ResponseAdapter<List<UniversalItem>>> getUniversalItems(
             @Header("token") String token,
-            @Path("updatesOnly") boolean updatesOnly,
-            @Path("parentId") int parentId
+            @Path("parentId") int parentId,
+            @Query("updatesOnly") int updatesOnly
     );
 
-    @GET("/api/universal_items/{id}?updates_only={updatesOnly}")
+    @GET("/api/universal_items/{id}")
     @Headers({
             "Authorization: {token}",
             "X-Requested-With: XMLHttpRequest",
@@ -66,7 +67,7 @@ public interface Webservice {
     })
     Call<ResponseAdapter<UniversalItem>> getUniversalItem(
             @Header("token") String token,
-            @Path("updatesOnly") boolean updatesOnly,
-            @Path("id") int id
+            @Path("id") int id,
+            @Query("updatesOnly") int updatesOnly
     );
 }

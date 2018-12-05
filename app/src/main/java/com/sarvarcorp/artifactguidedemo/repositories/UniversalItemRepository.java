@@ -2,7 +2,6 @@ package com.sarvarcorp.artifactguidedemo.repositories;
 
 import com.sarvarcorp.artifactguidedemo.App;
 import com.sarvarcorp.artifactguidedemo.daos.UniversalItemDao;
-import com.sarvarcorp.artifactguidedemo.entities.GuideType;
 import com.sarvarcorp.artifactguidedemo.entities.UniversalItem;
 import com.sarvarcorp.artifactguidedemo.workers.Webservice;
 
@@ -45,13 +44,11 @@ public class UniversalItemRepository {
             Response<ResponseAdapter<List<UniversalItem>>> response = null;
             try {
                 long time = System.currentTimeMillis();
-                if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0 || universalItemDao.count(parentId)==0) {
-                    response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId).execute();
-                boolean updatesOnly = true;
+                int updatesOnly = universalItemDao.lastListUpdatedDate(parentId);
                 if (universalItemDao.unfreshCount(parentId,time-FRESH_TIMEOUT)>0) {
-                    updatesOnly = false;
+                    updatesOnly = 0;
                 }
-                response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), updatesOnly, parentId).execute();
+                response = webservice.getUniversalItems(App.getComponent().provideStaticData().getUserToken(), parentId, updatesOnly).execute();
 
                 if (response.isSuccessful() && response.body() != null) {
                     int[] ids = new int[response.body().data.size()];
@@ -62,7 +59,7 @@ public class UniversalItemRepository {
                         ids[i] = universalItem.id;
                         i++;
                     }
-                    if (updatesOnly)
+                    if (updatesOnly==0)
                         universalItemDao.deleteNotIds(parentId, ids);
                 }
             } catch (IOException e) {
@@ -76,13 +73,11 @@ public class UniversalItemRepository {
             Response<ResponseAdapter<UniversalItem>> response = null;
             try {
                 long time = System.currentTimeMillis();
-                if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT) || !universalItemDao.exist(id)) {
-                    response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id).execute();
-                boolean updatesOnly = true;
+                int updatesOnly = universalItemDao.lastItemUpdatedDate(id);
                 if (universalItemDao.isUnfresh(id,time-FRESH_TIMEOUT)) {
-                    updatesOnly = false;
+                    updatesOnly = 0;
                 }
-                response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), updatesOnly, id).execute();
+                response = webservice.getUniversalItem(App.getComponent().provideStaticData().getUserToken(), id, updatesOnly).execute();
 
                 if (response.isSuccessful() && response.body() != null)
                     universalItemDao.save(response.body().data);
