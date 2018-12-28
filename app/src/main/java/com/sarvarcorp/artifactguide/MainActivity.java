@@ -95,6 +95,6 @@ public class MainActivity extends BaseAppCompatActivity {
         App.getComponent().provideFragmentWorker().onActivityDestroy();
 
         super.onDestroy();
-        System.exit(0);
+        finish();
     }
 }
